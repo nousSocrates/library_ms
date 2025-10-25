@@ -1,0 +1,52 @@
+# ================================
+# General
+# ================================
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.*.local
+
+# ================================
+# Node.js
+# ================================
+node_modules/
+coverage/
+dist/
+build/
+.cache/
+.tmp/
+
+# ================================
+# Backend (Express + Multer)
+# ================================
+backend/node_modules/
+backend/uploads/
+backend/.env
+
+# ================================
+# Frontend (React)
+# ================================
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.vite/
+frontend/.parcel-cache/
+
+# ================================
+# OS / Editor Files
+# ================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ================================
+# Misc
+# ================================
+*.bak
+*.tmp
