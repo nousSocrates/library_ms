@@ -1,27 +1,68 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
-const authMiddleware = async (req, res, next) => {
-  try {
-    // Get token from headers
-    const token = req.header("Authorization")?.replace("Bearer ", "");
+const protect = async (req, res, next) => {
+  let token;
 
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "No token, authorization denied" });
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      // Get token from header
+      token = req.headers.authorization.split(" ")[1];
+
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      // Get user from token
+      req.user = await User.findById(decoded.id).select("-password");
+
+      if (!req.user) {
+        return res.status(401).json({ message: "User not found" });
+      }
+
+      next();
+    } catch (error) {
+      return res.status(401).json({ message: "Not authorized, token failed" });
     }
+  }
 
-    // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Attach user to request
-    req.user = await User.findById(decoded.id).select("-password");
-
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token" });
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized, no token" });
   }
 };
 
-module.exports = authMiddleware;
+// Admin only access
+const adminOnly = (req, res, next) => {
+  if (req.user && req.user.role === "admin") {
+    next();
+  } else {
+    return res.status(403).json({ message: "Admin access only" });
+  }
+};
+
+// Teacher-only (admin allowed)
+const teacherOnly = (req, res, next) => {
+  if (req.user && (req.user.role === "teacher" || req.user.role === "admin")) {
+    next();
+  } else {
+    return res.status(403).json({ message: "Teacher access only" });
+  }
+};
+
+// Student-only (admin allowed)
+const studentOnly = (req, res, next) => {
+  if (req.user && (req.user.role === "student" || req.user.role === "admin")) {
+    next();
+  } else {
+    return res.status(403).json({ message: "Student access only" });
+  }
+};
+
+module.exports = {
+  protect,
+  adminOnly,
+  teacherOnly,
+  studentOnly,
+};
