@@ -52,6 +52,8 @@ router.get("/dashboard/student", protect, studentOnly, (req, res) => {
   res.json({ message: `Welcome Student ${req.user.email}`, user: req.user });
 });
 
+// Logout route
+router.post("/logout", authController.logout);
 
 
 module.exports = router;

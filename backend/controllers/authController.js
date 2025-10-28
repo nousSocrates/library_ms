@@ -60,8 +60,6 @@ exports.register = async (req, res) => {
   }
 };
 
-
-
 // LOGIN STUDENT
 exports.loginStudent = async (req, res) => {
   try {
@@ -71,11 +69,16 @@ exports.loginStudent = async (req, res) => {
     if (!student) return res.status(400).json({ message: "Student not found" });
 
     const isMatch = await bcrypt.compare(password, student.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: student._id, role: student.role }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      { id: student._id, role: student.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
+    );
 
     res.json({ message: "Student login successful", token, user: student });
   } catch (error) {
@@ -92,11 +95,16 @@ exports.loginTeacher = async (req, res) => {
     if (!teacher) return res.status(400).json({ message: "Teacher not found" });
 
     const isMatch = await bcrypt.compare(password, teacher.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: teacher._id, role: teacher.role }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      { id: teacher._id, role: teacher.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
+    );
 
     res.json({ message: "Teacher login successful", token, user: teacher });
   } catch (error) {
@@ -113,13 +121,28 @@ exports.loginAdmin = async (req, res) => {
     if (!admin) return res.status(400).json({ message: "Admin not found" });
 
     const isMatch = await bcrypt.compare(password, admin.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: admin._id, role: admin.role }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+    const token = jwt.sign(
+      { id: admin._id, role: admin.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
+    );
 
     res.json({ message: "Admin login successful", token, user: admin });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// LOGOUT USER
+exports.logout = async (req, res) => {
+  try {
+    // For JWT, logout is handled on the frontend by deleting the token
+    return res.json({ message: "User logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
