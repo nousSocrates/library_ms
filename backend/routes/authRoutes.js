@@ -39,6 +39,18 @@ router.get("/student-test", protect, studentOnly, (req, res) => {
 });
 
 
+// Dashboards
+router.get("/dashboard/admin", protect, adminOnly, (req, res) => {
+  res.json({ message: `Welcome Admin ${req.user.email}`, user: req.user });
+});
+
+router.get("/dashboard/teacher", protect, teacherOnly, (req, res) => {
+  res.json({ message: `Welcome Teacher ${req.user.email}`, user: req.user });
+});
+
+router.get("/dashboard/student", protect, studentOnly, (req, res) => {
+  res.json({ message: `Welcome Student ${req.user.email}`, user: req.user });
+});
 
 
 

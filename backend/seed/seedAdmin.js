@@ -1,46 +1,39 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import User from "../models/User.js";
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const dotenv = require("dotenv");
+const User = require("../models/User");
 
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB Connected for seeding"))
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
-
 const seedAdmin = async () => {
   try {
-    const existingAdmin = await User.findOne({
-      email: "noussocrates@gmail.com",
-    });
+    await mongoose.connect(process.env.MONGO_URI);
 
+    const existingAdmin = await User.findOne({ role: "admin" });
     if (existingAdmin) {
-      console.log("⚠️ Admin already exists. Skipping seeding.");
-      mongoose.connection.close();
-      return;
+      console.log("✅ Admin already exists.");
+      process.exit();
     }
 
-    const adminUser = new User({
-      name: "nousSocrates", // ✅ Add this line
+    const hashedPassword = await bcrypt.hash("nousAdmin", 10);
+
+    const admin = new User({
+      name: "nousSocrates",
       firstName: "Phelix",
       lastName: "Ouma",
       email: "noussocrates@gmail.com",
-      password: "nousAdmin",
+      password: hashedPassword,
       role: "admin",
       gender: "Male",
-      phone: "0700000000",
+      phone: "0704588581",
     });
 
-    await adminUser.save();
+    await admin.save();
     console.log("✅ Admin user seeded successfully!");
-    mongoose.connection.close();
+    process.exit();
   } catch (error) {
-    console.error("❌ Error seeding admin:", error);
-    mongoose.connection.close();
+    console.log("❌ Error seeding admin:", error);
+    process.exit(1);
   }
 };
 
