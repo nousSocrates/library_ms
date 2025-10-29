@@ -21,6 +21,9 @@ app.use("/api/admin", adminRoutes);
 const dashboardRoutes = require("./routes/dashboardRoutes");
 app.use("/api/dashboard", dashboardRoutes);
 
+const bookRoutes = require("./routes/bookRoutes");
+app.use("/api/books", bookRoutes);
+
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI, {
