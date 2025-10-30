@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Real Time Clock</title>
+  <style>
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .clock-container {
+      text-align: center;
+      padding: 20px 40px;
+      background: #1e293b;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 22px;
+      color: #38bdf8;
+    }
+    .clock {
+      font-size: 56px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .date {
+      color: #94a3b8;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-container">
+    <h1>Real-Time Clock</h1>
+    <div id="clock" class="clock">--:--:--</div>
+    <div id="date" class="date">Loading...</div>
+  </div>
+
+  <script>
+    function updateClock(){
+      const now = new Date();
+      let h = now.getHours();
+      let m = now.getMinutes();
+      let s = now.getSeconds();
+      let ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      h = h < 10 ? '0' + h : h;
+      m = m < 10 ? '0' + m : m;
+      s = s < 10 ? '0' + s : s;
+      document.getElementById('clock').textContent = `${h}:${m}:${s} ${ampm}`;
+      document.getElementById('date').textContent = now.toDateString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>

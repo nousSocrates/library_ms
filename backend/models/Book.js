@@ -29,16 +29,18 @@ const bookSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    // isbn: {
+    //   type: String,
+    //   unique: true,
+    //   sparse: true, // allows multiple nulls / empty ISBN fields
+    //   trim: true,
+    // },
     // author: {
     //   type: String,
     //   required: true,
     //   trim: true,
     // },
-    // isbn: {
-    //   type: String,
-    //   required: true,
-    //   unique: true,
-    // },
+
     // category: {
     //   type: String,
     //   default: "General",
