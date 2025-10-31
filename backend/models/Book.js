@@ -62,4 +62,9 @@ bookSchema.pre("save", function (next) {
   next();
 });
 
+bookSchema.index(
+  { learning_area: 1, serial_number: 1, level: 1, publisher: 1 },
+  { unique: true }
+);
+
 module.exports = mongoose.model("Book", bookSchema);
