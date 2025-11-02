@@ -8,7 +8,8 @@ const borrowRecordSchema = new mongoose.Schema(
       required: true,
     },
     borrower: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Link directly to user model
       required: true,
     },
     borrowDate: {

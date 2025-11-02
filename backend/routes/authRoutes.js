@@ -23,11 +23,6 @@ router.get("/protected", protect, (req, res) => {
   res.json({ message: "Protected route accessed", user: req.user });
 });
 
-// Admin only test
-router.get("/admin-test", protect, adminOnly, (req, res) => {
-  res.json({ message: "Admin route accessed", user: req.user });
-});
-
 // Teacher only test
 router.get("/teacher-test", protect, teacherOnly, (req, res) => {
   res.json({ message: "Teacher route accessed", user: req.user });
