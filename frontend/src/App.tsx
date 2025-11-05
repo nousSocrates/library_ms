@@ -1,9 +1,10 @@
-function App() {
+import Layout from "./components/Layout";
+import Dashboard from "./pages/Dashboard";
+
+export default function App() {
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-br from-sky-500 to-indigo-700 text-white text-4xl font-bold">
-      Hello, Tailwind + Vite + TypeScript 🎨
-    </div>
+    <Layout>
+      <Dashboard />
+    </Layout>
   );
 }
-
-export default App;
